@@ -16,7 +16,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             /* 
             DEFAULT BACKGROUND - Replace the URL below with your desired background image
-            For GitHub Pages, you can use: url('https://your-username.github.io/your-repo/path-to-image.jpg')
+            For GitHub Pages, you can use: url('https://github.com/GreatCoderLucifer/Endgame/blob/c82b968e80f2adc2e74b6d08ab5ead5be71ba920/ChatGPT%20Image%20Sep%2017%2C%202025%2C%2003_24_15%20PM.png')
             */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             /* 
