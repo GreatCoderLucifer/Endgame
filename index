@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown to 3 May 2026</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            /* 
+            DEFAULT BACKGROUND - Replace the URL below with your desired background image
+            For GitHub Pages, you can use: url('https://your-username.github.io/your-repo/path-to-image.jpg')
+            */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* 
+            UNCOMMENT THE LINE BELOW AND ADD YOUR IMAGE URL:
+            background: linear-gradient(rgba(102, 126, 234, 0.7), rgba(118, 75, 162, 0.7)), url('YOUR_IMAGE_URL_HERE');
+            */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Single glassmorphic card containing all countdown elements */
+        .countdown-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 800px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .countdown-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Container for all time units */
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Individual time unit */
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .time-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .time-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Separator between time units */
+        .time-separator {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 300;
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+
+        /* Progress bar section */
+        .progress-section {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .progress-label {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-percentage {
+            font-weight: 600;
+            color: #48bb78;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Completion message */
+        .completion-message {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .completion-message h2 {
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .completion-message p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .countdown-card {
+                padding: 30px 20px;
+            }
+
+            .time-display {
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .time-value {
+                font-size: 2.2rem;
+            }
+
+            .time-separator {
+                display: none; /* Hide separators on mobile for better spacing */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.7rem;
+            }
+
+            .time-display {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .time-unit {
+                min-width: 120px;
+            }
+
+            .time-value {
+                font-size: 2.5rem;
+            }
+
+            .countdown-card {
+                padding: 25px 15px;
+            }
+
+            .progress-label {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+        }
+
+        /* No-JS fallback */
+        .no-js-message {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .no-js-message h2 {
+            margin-bottom: 16px;
+            color: #e53e3e;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <div class="header">
+        <h1>Countdown to 3 May 2026</h1>
+        <p id="reference-date">Reference: 17 Sep 2025 (Asia/Kolkata)</p>
+    </div>
+
+    <!-- Single glassmorphic countdown card -->
+    <div id="countdown-container">
+        <div class="countdown-card">
+            <!-- Time display container -->
+            <div class="time-display">
+                <div class="time-unit">
+                    <span id="months" class="time-value" aria-live="polite">--</span>
+                    <div class="time-label">Months</div>
+                </div>
+                
+                <div class="time-separator">:</div>
+                
+                <div class="time-unit">
+                    <span id="days" class="time-value" aria-live="polite">--</span>
+                    <div class="time-label">Days</div>
+                </div>
+                
+                <div class="time-separator">:</div>
+                
+                <div class="time-unit">
+                    <span id="hours" class="time-value" aria-live="polite">--</span>
+                    <div class="time-label">Hours</div>
+                </div>
+                
+                <div class="time-separator">:</div>
+                
+                <div class="time-unit">
+                    <span id="minutes" class="time-value" aria-live="polite">--</span>
+                    <div class="time-label">Minutes</div>
+                </div>
+                
+                <div class="time-separator">:</div>
+                
+                <div class="time-unit">
+                    <span id="seconds" class="time-value" aria-live="polite">--</span>
+                    <div class="time-label">Seconds</div>
+                </div>
+            </div>
+
+            <!-- Progress bar section -->
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Current month progress</span>
+                    <span id="progress-percentage" class="progress-percentage">0.0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No JavaScript fallback -->
+    <noscript>
+        <div class="no-js-message">
+            <h2>JavaScript Required</h2>
+            <p>Target Date: 3 May 2026, 12:00 AM (Asia/Kolkata)</p>
+            <p>Please enable JavaScript to see the live countdown.</p>
+        </div>
+    </noscript>
+
+    <script>
+        // Fixed reference time: 17 September 2025, 00:00:00 Asia/Kolkata
+        const FIXED_NOW = new Date('2025-09-17T00:00:00+05:30');
+        
+        // Target time: 3 May 2026, 00:00:00 Asia/Kolkata
+        const TARGET_DATE = new Date('2026-05-03T00:00:00+05:30');
+
+        // DOM elements
+        const monthsEl = document.getElementById('months');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const countdownContainer = document.getElementById('countdown-container');
+        const referenceDateEl = document.getElementById('reference-date');
+
+        /**
+         * Update the reference date display to show current date relative to fixed reference
+         */
+        function updateReferenceDate() {
+            // Calculate how many days have passed since the fixed reference date
+            const startTime = FIXED_NOW.getTime();
+            const currentTime = startTime + (Date.now() - startTime);
+            const simulatedNow = new Date(currentTime);
+            
+            // Format the current simulated date
+            const options = { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric',
+                timeZone: 'Asia/Kolkata'
+            };
+            
+            const formattedDate = simulatedNow.toLocaleDateString('en-GB', options);
+            referenceDateEl.textContent = `Reference: ${formattedDate} (Asia/Kolkata)`;
+        }
+
+        /**
+         * Calculate the difference between two dates in months, days, hours, minutes, seconds
+         * @param {Date} startDate - The start date (current time)
+         * @param {Date} endDate - The target date
+         * @returns {Object} Object containing months, days, hours, minutes, seconds
+         */
+        function calculateTimeDifference(startDate, endDate) {
+            // If target date has passed, return zero values
+            if (endDate <= startDate) {
+                return {
+                    months: 0,
+                    days: 0,
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
+                    hasReached: true
+                };
+            }
+
+            let current = new Date(startDate);
+            let target = new Date(endDate);
+            
+            // Calculate full months
+            let months = 0;
+            while (true) {
+                // Create a date one month ahead
+                let nextMonth = new Date(current);
+                nextMonth.setMonth(nextMonth.getMonth() + 1);
+                
+                // If adding one more month would exceed target, break
+                if (nextMonth > target) {
+                    break;
+                }
+                
+                current = nextMonth;
+                months++;
+            }
+
+            // Calculate remaining time in milliseconds
+            const remainingMs = target.getTime() - current.getTime();
+            
+            // Convert to days, hours, minutes, seconds
+            const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
+
+            return {
+                months,
+                days,
+                hours,
+                minutes,
+                seconds,
+                hasReached: false
+            };
+        }
+
+        /**
+         * Calculate progress through the current month (0-100%)
+         * @param {Date} currentDate - The current date
+         * @returns {number} Progress percentage
+         */
+        function calculateMonthProgress(currentDate) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            // First day of current month
+            const monthStart = new Date(year, month, 1);
+            // First day of next month
+            const monthEnd = new Date(year, month + 1, 1);
+            
+            // Total days in month
+            const totalDays = (monthEnd - monthStart) / (1000 * 60 * 60 * 24);
+            // Days elapsed in current month (including partial day)
+            const msElapsed = currentDate - monthStart;
+            const daysElapsed = msElapsed / (1000 * 60 * 60 * 24);
+            
+            return Math.min((daysElapsed / totalDays) * 100, 100);
+        }
+
+        /**
+         * Update the countdown display
+         */
+        function updateCountdown() {
+            // Use fixed time for simulation, but add elapsed seconds for live effect
+            const startTime = FIXED_NOW.getTime();
+            const currentTime = startTime + (Date.now() - startTime);
+            const simulatedNow = new Date(currentTime);
+            
+            // Update reference date
+            updateReferenceDate();
+            
+            const timeDiff = calculateTimeDifference(simulatedNow, TARGET_DATE);
+            
+            if (timeDiff.hasReached) {
+                showCompletionMessage();
+                return;
+            }
+
+            // Update countdown values with smooth number transitions
+            updateValueWithTransition(monthsEl, timeDiff.months);
+            updateValueWithTransition(daysEl, timeDiff.days);
+            updateValueWithTransition(hoursEl, timeDiff.hours);
+            updateValueWithTransition(minutesEl, timeDiff.minutes);
+            updateValueWithTransition(secondsEl, timeDiff.seconds);
+
+            // Update progress bar with percentage display
+            const monthProgress = calculateMonthProgress(simulatedNow);
+            progressFill.style.width = `${monthProgress}%`;
+            progressPercentage.textContent = `${monthProgress.toFixed(1)}%`;
+        }
+
+        /**
+         * Update a value element with smooth transition effect
+         * @param {HTMLElement} element - The element to update
+         * @param {number} newValue - The new value to display
+         */
+        function updateValueWithTransition(element, newValue) {
+            const currentValue = element.textContent;
+            const formattedValue = newValue.toString().padStart(2, '0');
+            
+            if (currentValue !== formattedValue) {
+                element.style.transform = 'scale(1.1)';
+                element.textContent = formattedValue;
+                
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 150);
+            }
+        }
+
+        /**
+         * Show completion message when countdown reaches zero
+         */
+        function showCompletionMessage() {
+            countdownContainer.innerHTML = `
+                <div class="completion-message">
+                    <h2>Target Reached! 🎉</h2>
+                    <p>The countdown to 3 May 2026 is complete!</p>
+                </div>
+            `;
+        }
+
+        /**
+         * Initialize the countdown and start the interval
+         */
+        function initializeCountdown() {
+            // Initial update
+            updateCountdown();
+            
+            // Update every second
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Start the countdown when the page loads
+        document.addEventListener('DOMContentLoaded', initializeCountdown);
+
+        // Also start immediately if DOM is already loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeCountdown);
+        } else {
+            initializeCountdown();
+        }
+    </script>
+</body>
+</html>
